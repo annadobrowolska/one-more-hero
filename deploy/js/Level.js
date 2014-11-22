@@ -1,3 +1,10 @@
+if (x != 320) {  //stworzenie przepaści jeśli x = 320
+    var groundBlock = this.game.add.sprite(x, this.game.height - 67, 'ground');
+    this.game.physics.enable(groundBlock, Phaser.Physics.ARCADE);
+    groundBlock.body.immovable = true;
+    groundBlock.body.allowGravity = false;
+    this.curedElements.add(groundBlock);
+}
 function Level(game) {
     this.game = game;
     this.curedElements = null;
