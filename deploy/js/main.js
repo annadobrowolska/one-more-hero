@@ -7,10 +7,14 @@ var t = game.add.text(this.world.centerX, this.world.centerY, text, style);
 t.anchor.setTo(0.5, 0.5);
 
 function preload() {
+    level = new Level(game);
+    level.preload();
 }
 function create() {
+    level.create();
 }
 function update() {
+    level.update();
 }
 
 
