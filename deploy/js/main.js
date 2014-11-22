@@ -14,7 +14,6 @@ function create() {
     level.create();
 }
 function update() {
-    level.update();
 }
 
 

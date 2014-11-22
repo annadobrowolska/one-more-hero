@@ -1,19 +1,23 @@
 function Level(game) {
     this.game = game;
-    this.ground = null;
+    this.curedElements = null;
 }
 
 Level.prototype = {
     preload: function () {
         this.game.load.image('sky', 'assets/sky.png');
-        this.game.load.image('ground', 'assets/ground_texture.png');
+        this.game.load.image('ground', 'assets/ground.png');
     },
 
     create: function () {
-        // add background for this level
         this.game.add.sprite(0, 0, 'sky');
-    },
-
-    update: function () {
+        addGround();
     }
 };
+
+function addGround() {
+    this.curedElements = game.add.group();
+    var ground = this.curedElements.create(0, game.world.height - 67, 'ground');
+    this.game.physics.enable(ground, Phaser.Physics.ARCADE);
+    ground.body.immovable = true;
+}
