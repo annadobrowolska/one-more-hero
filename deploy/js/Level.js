@@ -14,7 +14,16 @@ Level.prototype = {
     preload: function () {
         this.game.load.image('sky', 'assets/sky.png');
         this.game.load.image('ground', 'assets/ground.png');
-    },
+    }
+},
+
+/**
+ * Handling end of the game
+ */
+    gameOver
+:
+function () {
+    game.add.text(game.world.centerX, 400, '- GAME OVER -', { font: "40px Arial", fill: "#ffffff", align: "center" });
 }
 create: function () {
     this.game.add.sprite(0, 0, 'sky');
@@ -38,3 +47,5 @@ createCuredElements: function () {
         this.game.physics.enable(ground, Phaser.Physics.ARCADE);
         ground.body.immovable = true;
     }
+}
+;

@@ -1,3 +1,6 @@
+this.game.physics.arcade.collide(this.player, this.level.curedElements);
+this.addSensitivityToKeys();
+this.handleFallIntoGulf();
 /**
  * Enables player physics with proper gravity
  * Function can be used only in Player class, don't use externally!
@@ -53,6 +56,15 @@ Player.prototype = {
         this.game.load.spritesheet('player', 'assets/player.png', 48, 48);
     },
 
+    /**
+     * Handling fall into the gulf.
+     */
+    handleFallIntoGulf: function () {
+        if (this.player.body.onFloor()) {
+            this.player.body.collideWorldBounds = false;
+            level.gameOver();
+        }
+    }
     create: function () {
         this.player = game.add.sprite(this.game.width / 5, game.world.height / 2, 'player');
         player = game.add.sprite(0, game.world.height - 115, 'player');
