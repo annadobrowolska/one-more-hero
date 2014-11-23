@@ -1,3 +1,6 @@
+this.addSensitivityToKeys();
+this.handleFallIntoGulf();
+this.handleReachEndOfLevel();
 this.game.physics.arcade.collide(this.player, this.level.curedElements);
 this.addSensitivityToKeys();
 this.handleFallIntoGulf();
@@ -63,6 +66,16 @@ Player.prototype = {
         if (this.player.body.onFloor()) {
             this.player.body.collideWorldBounds = false;
             level.gameOver();
+        }
+    },
+
+    /**
+     * Handling reach end of the level.
+     */
+    handleReachEndOfLevel: function () {
+        if (this.player.position.x > 700) {
+            this.game.input.keyboard.destroy();
+            level.winLevel();
         }
     }
     create: function () {
