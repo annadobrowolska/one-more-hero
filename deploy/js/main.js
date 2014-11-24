@@ -1,24 +1,25 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var FIRST_LEVEL_STATE = "firstLevel";
 
 var level = null;
 var player = null;
-var text = "Phaser Version " + Phaser.DEV_VERSION + " works!";
-var style = { font: "24px Arial", fill: "#fff", align: "center" };
-var t = game.add.text(this.world.centerX, this.world.centerY, text, style);
-t.anchor.setTo(0.5, 0.5);
 
-function preload() {
-    level = new Level(game);
-    level.preload();
+var firstLevelState = {
+    preload: function () {
+        level = new Level(game);
+        level.preload();
 
-    player = new Player(game);
-    player.preload();
-}
-function create() {
-    level.create();
-    player.create();
-}
-function update() {
-}
+        player = new Player(game, level);
+        player.preload();
+    },
+    create: function () {
+        level.create();
+        player.create();
+    },
+    update: function () {
+        player.update();
+    }
+};
 
-
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'One More Hero');
+game.state.add(FIRST_LEVEL_STATE, firstLevelState);
+game.state.start(FIRST_LEVEL_STATE);
