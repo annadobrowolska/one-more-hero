@@ -4,6 +4,7 @@ Player = function (game, level) {
     this.level = level;
     this.player = null;
     this.cursors = null;
+    this.scores = 0;
     this.SPEED = 200;
 };
 
@@ -28,6 +29,8 @@ Player.prototype = {
         this.addSensitivityToKeys();
         this.handleFallIntoGulf();
         this.handleReachEndOfLevel();
+
+        this.game.physics.arcade.overlap(this.player, this.level.stars, this.collectStar, null, this);
     },
 
     /**
@@ -74,5 +77,10 @@ Player.prototype = {
             this.game.input.keyboard.destroy();
             level.winLevel();
         }
+    },
+
+    collectStar: function (player, star) {
+        star.kill();
+        this.scores += 100;
     }
 };
