@@ -1,17 +1,20 @@
 function Level(game) {
     this.game = game;
     this.curedElements = null;
+    this.stars = null;
 }
 
 Level.prototype = {
     preload: function () {
         this.game.load.image('sky', 'assets/sky.png');
         this.game.load.image('ground', 'assets/ground.png');
+        this.game.load.image('item', 'assets/item.png');
     },
 
     create: function () {
         this.game.add.sprite(0, 0, 'sky');
         this.createCuredElements();
+        this.createScoredItems();
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
     },
 
@@ -29,6 +32,21 @@ Level.prototype = {
                 groundBlock.body.allowGravity = false;
                 this.curedElements.add(groundBlock);
             }
+        }
+    },
+
+    /**
+     * Creates scored items
+     * Function can be used only in Level class, don't use externally!
+     */
+    createScoredItems: function () {
+        this.stars = game.add.group();
+        this.stars.enableBody = true;
+        for (var i = 0; i < 4; i++) {
+            var star = this.game.add.sprite((i + 1) * 150, this.game.height - 200, 'item');
+            this.game.physics.enable(star, Phaser.Physics.ARCADE);
+            star.body.allowGravity = false;
+            this.stars.add(star);
         }
     },
 
@@ -57,4 +75,5 @@ Level.prototype = {
         game.add.text(game.world.centerX + 50, 450, 'click to restart', { font: "20px Arial", fill: "#ffffff", align: "center" });
         this.game.input.onDown.add(this.restartGame, this);
     }
-};
+}
+;
