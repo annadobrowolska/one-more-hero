@@ -1,10 +1,10 @@
-Player = function (game, level) {
+Player = function (game, level, gameInterface) {
 
     this.game = game;
     this.level = level;
+    this.gameInterface = gameInterface;
     this.player = null;
     this.cursors = null;
-    this.scores = 0;
     this.SPEED = 200;
 };
 
@@ -81,6 +81,7 @@ Player.prototype = {
 
     collectStar: function (player, star) {
         star.kill();
-        this.scores += 100;
+        this.gameInterface.score += 100;
+        this.gameInterface.scoreText.setText("score: " + this.gameInterface.score)
     }
 };
