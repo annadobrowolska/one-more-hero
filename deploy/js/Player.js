@@ -6,6 +6,7 @@ Player = function (game, level, gameInterface) {
     this.player = null;
     this.cursors = null;
     this.SPEED = 200;
+    this.alive = true;
 };
 
 Player.prototype = {
@@ -65,7 +66,8 @@ Player.prototype = {
     handleFallIntoGulf: function () {
         if (this.player.body.onFloor()) {
             this.player.body.collideWorldBounds = false;
-            level.gameOver();
+            this.level.gameOver();
+            this.alive = false;
         }
     },
 
@@ -75,7 +77,8 @@ Player.prototype = {
     handleReachEndOfLevel: function () {
         if (this.player.position.x > 700) {
             this.game.input.keyboard.destroy();
-            level.winLevel();
+            this.level.winLevel();
+            this.alive = false;
         }
     },
 

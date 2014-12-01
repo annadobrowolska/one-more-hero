@@ -9,7 +9,7 @@ var firstLevelState = {
         level = new Level(game);
         level.preload();
 
-        gameInterface = new Interface(game);
+        gameInterface = new Interface(game, player);
 
         player = new Player(game, level, gameInterface);
         player.preload();
@@ -21,6 +21,7 @@ var firstLevelState = {
         player.create();
     },
     update: function () {
+        gameInterface.update(player.alive);
         player.update();
     }
 };
@@ -28,4 +29,3 @@ var firstLevelState = {
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'One More Hero');
 game.state.add(FIRST_LEVEL_STATE, firstLevelState);
 game.state.start(FIRST_LEVEL_STATE);
-
