@@ -14,6 +14,7 @@ Level.prototype = {
         this.game.load.image('sky', 'assets/sky.png');
         this.game.load.image('ground', 'assets/ground.png');
         this.game.load.image('item', 'assets/item.png');
+        this.game.load.image('enemy', 'assets/enemy.png');
     },
 
     create: function () {
