@@ -17,12 +17,10 @@ Player.prototype = {
 
     create: function () {
         this.player = game.add.sprite(this.game.width / 5, game.world.height / 2, 'player');
-
         this.enablePlayerPhysics();
-        this.player.body.collideWorldBounds = true;
-        this.player.body.drag.setTo(600, 0); // zwalnianie postaci jak nie są naciskane klawisze (x,y)
-
+        this.player.body.drag.setTo(600, 0); // zwalnianie postaci jak nie są naciskane klawisze
         this.cursors = this.game.input.keyboard.createCursorKeys();
+        this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_PLATFORMER);
     },
 
     update: function () {
@@ -42,6 +40,7 @@ Player.prototype = {
         this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
         this.game.physics.arcade.gravity.y = 1869;
         this.game.physics.arcade.enableBody(this.player);
+        this.player.body.collideWorldBounds = true;
     },
 
     /**
@@ -75,7 +74,7 @@ Player.prototype = {
      * Handling reach end of the level.
      */
     handleReachEndOfLevel: function () {
-        if (this.player.position.x > 700) {
+        if (this.player.position.x > REAL_WIDTH - 100) {
             this.game.input.keyboard.destroy();
             this.level.winLevel();
             this.alive = false;

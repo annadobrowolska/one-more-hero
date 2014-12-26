@@ -9,7 +9,9 @@ Interface = function (game) {
 Interface.prototype = {
     create: function () {
         this.timerText = this.game.add.text(16, 16, "time: " + "  00:00:000", { fontSize: '32px', fill: '#ffffff' });
+        this.timerText.fixedToCamera = true;
         this.scoreText = this.game.add.text(16, 40, 'score: 0', { fontSize: '32px', fill: '#ffffff' });
+        this.scoreText.fixedToCamera = true;
     },
 
     update: function (alive) {
