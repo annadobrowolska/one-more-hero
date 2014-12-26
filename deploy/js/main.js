@@ -22,6 +22,7 @@ var firstLevelState = {
     },
     update: function () {
         gameInterface.update(player.alive);
+        level.update();
         player.update();
     }
 };

@@ -16,7 +16,6 @@ Player.prototype = {
     },
 
     create: function () {
-        this.player = game.add.sprite(this.game.width / 5, game.world.height / 2, 'player');
         this.enablePlayerPhysics();
         this.player.body.drag.setTo(600, 0); // zwalnianie postaci jak nie są naciskane klawisze
         this.cursors = this.game.input.keyboard.createCursorKeys();
@@ -28,6 +27,7 @@ Player.prototype = {
         this.addSensitivityToKeys();
         this.handleFallIntoGulf();
         this.handleReachEndOfLevel();
+        this.interactionWithEnemies();
 
         this.game.physics.arcade.overlap(this.player, this.level.stars, this.collectStar, null, this);
     },
@@ -37,6 +37,7 @@ Player.prototype = {
      * Function can be used only in Player class, don't use externally!
      */
     enablePlayerPhysics: function () {
+        this.player = game.add.sprite(this.game.width / 5, game.world.height / 2, 'player');
         this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
         this.game.physics.arcade.gravity.y = 1869;
         this.game.physics.arcade.enableBody(this.player);
@@ -61,6 +62,7 @@ Player.prototype = {
 
     /**
      * Handling fall into the gulf.
+     * Function can be used only in Player class, don't use externally!
      */
     handleFallIntoGulf: function () {
         if (this.player.body.onFloor()) {
@@ -72,6 +74,7 @@ Player.prototype = {
 
     /**
      * Handling reach end of the level.
+     * Function can be used only in Player class, don't use externally!
      */
     handleReachEndOfLevel: function () {
         if (this.player.position.x > REAL_WIDTH - 100) {
@@ -81,9 +84,49 @@ Player.prototype = {
         }
     },
 
+    /**
+     * Supports player control.
+     * Function can be used only in Player class, don't use externally!
+     */
     collectStar: function (player, star) {
         star.kill();
         this.gameInterface.score += 100;
         this.gameInterface.scoreText.setText("score: " + this.gameInterface.score)
+    },
+
+    /**
+     * Handling player interaction with enemies
+     * Function can be used only in Player class, don't use externally!
+     */
+    interactionWithEnemies: function () {
+        for (var i = 0; i < this.level.enemies.length; i++) {
+            var enemy = this.level.enemies.getAt(i);
+            if (enemy.body.y > 500) {
+                enemy.body.collideWorldBounds = false;
+            }
+        }
+        this.updateEnemyPosition();
+        this.game.physics.arcade.overlap(this.player, this.level.enemies, this.hitPlayer, null, this);
+    },
+
+    /**
+     * Enemies moves towards the player
+     * Function can be used only in Player class, don't use externally!
+     */
+    updateEnemyPosition: function () {
+        for (var i = 0; i < this.level.enemies.length; i++) {
+            var enemy = this.level.enemies.getAt(i);
+            this.game.physics.arcade.moveToXY(enemy, this.player.x, this.player.y, 80)
+        }
+    },
+
+    /**
+     * Handling player injuries
+     * Function can be used only in Player class, don't use externally!
+     */
+    hitPlayer: function (player, enemy) {
+        player.kill();
+        this.level.gameOver();
+        this.alive = false;
     }
 };

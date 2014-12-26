@@ -2,6 +2,7 @@ function Level(game) {
     this.game = game;
     this.curedElements = null;
     this.stars = null;
+    this.enemies = null;
 }
 
 /**
@@ -22,7 +23,12 @@ Level.prototype = {
         this.createSky();
         this.createCuredElements();
         this.createScoredItems();
+        this.createEnemies();
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    },
+
+    update: function () {
+        this.game.physics.arcade.collide(this.enemies, this.curedElements);
     },
 
     /**
@@ -68,12 +74,33 @@ Level.prototype = {
     },
 
     /**
+     * Creates enemies
+     * Function can be used only in Level class, don't use externally!
+     */
+    createEnemies: function () {
+        this.enemies = game.add.group();
+        this.enemies.enableBody = true;
+        for (var i = 0; i < 1; i++) {
+            var enemy = this.game.add.sprite(600, this.game.height - 115, 'enemy');
+            this.game.physics.enable(enemy, Phaser.Physics.ARCADE);
+            enemy.body.allowGravity = true;
+            enemy.body.collideWorldBounds = true;
+            this.enemies.add(enemy);
+        }
+        this.game.physics.arcade.enableBody(this.enemies);
+    },
+
+    /**
      * Handling end of the game
      */
     gameOver: function () {
         game.add.text(game.camera.x + 400, 400, '- GAME OVER -', { font: "40px Arial", fill: "#ffffff", align: "center" });
         game.add.text(game.camera.x + 450, 450, 'click to restart', { font: "20px Arial", fill: "#ffffff", align: "center" });
         this.game.input.onDown.add(this.restartGame, this);
+        for (var i = 0; i < this.enemies.length; i++) {
+            var enemy = this.enemies.getAt(i);
+            enemy.body.moves = false;
+        }
     },
 
     /**
