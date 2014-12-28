@@ -8,7 +8,7 @@ function Level(game) {
 /**
  *  constant defining the width of the world
  */
-var REAL_WIDTH = 1600;
+REAL_WIDTH = 1600;
 
 Level.prototype = {
     preload: function () {
@@ -47,9 +47,9 @@ Level.prototype = {
      */
     createCuredElements: function () {
         this.curedElements = this.game.add.group();
-        for (var x = 0; x <= REAL_WIDTH; x += 80) {
-            if (x != 320) {  //stworzenie przepaści jeśli x = 320
-                var groundBlock = this.game.add.sprite(x, this.game.height - 67, 'ground');
+        for (var x = 0; x <= REAL_WIDTH; x += TILE_SIZE) {
+            if (x != 320 && x != 256) {  //stworzenie przepaści jeśli x = 320
+                var groundBlock = this.game.add.sprite(x, this.game.height - TILE_SIZE, 'ground');
                 this.game.physics.enable(groundBlock, Phaser.Physics.ARCADE);
                 groundBlock.body.immovable = true;
                 groundBlock.body.allowGravity = false;
@@ -81,7 +81,7 @@ Level.prototype = {
         this.enemies = game.add.group();
         this.enemies.enableBody = true;
         for (var i = 0; i < 1; i++) {
-            var enemy = this.game.add.sprite(600, this.game.height - 115, 'enemy');
+            var enemy = this.game.add.sprite(750, this.game.height - 2 * TILE_SIZE, 'enemy');
             this.game.physics.enable(enemy, Phaser.Physics.ARCADE);
             enemy.body.allowGravity = true;
             enemy.body.collideWorldBounds = true;

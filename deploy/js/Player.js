@@ -5,15 +5,19 @@ Player = function (game, level, gameInterface) {
     this.gameInterface = gameInterface;
     this.player = null;
     this.cursors = null;
-    this.SPEED = 200;
     this.alive = true;
     this.isTurnRight = true;
 };
 
+/** constant defining player speed */
+SPEED = 200;
+/** constant defining enemy speed */
+ENEMY_SPEED = 80;
+
 Player.prototype = {
 
     preload: function () {
-        this.game.load.spritesheet('player', 'assets/player.png', 48, 48);
+        this.game.load.spritesheet('player', 'assets/player.png', TILE_SIZE, TILE_SIZE);
     },
 
     create: function () {
@@ -39,7 +43,7 @@ Player.prototype = {
      * Function can be used only in Player class, don't use externally!
      */
     enablePlayerPhysics: function () {
-        this.player = game.add.sprite(this.game.width / 5, game.world.height / 2, 'player');
+        this.player = game.add.sprite(TILE_SIZE, game.world.height / 2, 'player');
         this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
         this.game.physics.arcade.gravity.y = 1869;
         this.game.physics.arcade.enableBody(this.player);
@@ -52,11 +56,11 @@ Player.prototype = {
      */
     addSensitivityToKeys: function () {
         if (this.cursors.left.isDown) {
-            this.player.body.velocity.x = -this.SPEED;
+            this.player.body.velocity.x = -SPEED;
             this.isTurnRight = false;
         }
         else if (this.cursors.right.isDown) {
-            this.player.body.velocity.x = this.SPEED;
+            this.player.body.velocity.x = SPEED;
             this.isTurnRight = true;
         }
         if (this.cursors.up.isDown && this.player.body.touching.down) {
@@ -105,12 +109,11 @@ Player.prototype = {
     interactionWithEnemies: function () {
         for (var i = 0; i < this.level.enemies.length; i++) {
             var enemy = this.level.enemies.getAt(i);
-            if (enemy.body.y > 500) {
+            if (!enemy.body.touching.down) {
                 enemy.body.collideWorldBounds = false;
             } else {
-                this.game.physics.arcade.moveToXY(enemy, this.player.x, enemy.body.y, 80)
+                this.game.physics.arcade.moveToXY(enemy, this.player.x, enemy.body.y, ENEMY_SPEED)
             }
-
             this.handleFight(enemy);
         }
         this.game.physics.arcade.overlap(this.player, this.level.enemies, this.hitPlayer, null, this);
