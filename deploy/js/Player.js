@@ -116,7 +116,7 @@ Player.prototype = {
     updateEnemyPosition: function () {
         for (var i = 0; i < this.level.enemies.length; i++) {
             var enemy = this.level.enemies.getAt(i);
-            this.game.physics.arcade.moveToXY(enemy, this.player.x, this.player.y, 80)
+            this.game.physics.arcade.moveToXY(enemy, this.player.x, enemy.body.y, 80)
         }
     },
 
