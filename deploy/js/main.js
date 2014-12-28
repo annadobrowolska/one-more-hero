@@ -28,6 +28,6 @@ var firstLevelState = {
     }
 };
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'One More Hero');
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
 game.state.add(FIRST_LEVEL_STATE, firstLevelState);
 game.state.start(FIRST_LEVEL_STATE);
