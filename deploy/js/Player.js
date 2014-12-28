@@ -19,6 +19,7 @@ Player.prototype = {
         this.enablePlayerPhysics();
         this.player.body.drag.setTo(600, 0); // zwalnianie postaci jak nie są naciskane klawisze
         this.cursors = this.game.input.keyboard.createCursorKeys();
+        this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_PLATFORMER);
     },
 
@@ -95,7 +96,7 @@ Player.prototype = {
     },
 
     /**
-     * Handling player interaction with enemies
+     * Handling player interaction with enemies. Enemies moves towards the player.
      * Function can be used only in Player class, don't use externally!
      */
     interactionWithEnemies: function () {
@@ -103,20 +104,22 @@ Player.prototype = {
             var enemy = this.level.enemies.getAt(i);
             if (enemy.body.y > 500) {
                 enemy.body.collideWorldBounds = false;
+            } else {
+                this.game.physics.arcade.moveToXY(enemy, this.player.x, enemy.body.y, 80)
             }
+
+            this.handleFight(enemy);
         }
-        this.updateEnemyPosition();
         this.game.physics.arcade.overlap(this.player, this.level.enemies, this.hitPlayer, null, this);
     },
 
     /**
-     * Enemies moves towards the player
+     * If enemy is enough close to player and space bar is pressed then player kill enemy
      * Function can be used only in Player class, don't use externally!
      */
-    updateEnemyPosition: function () {
-        for (var i = 0; i < this.level.enemies.length; i++) {
-            var enemy = this.level.enemies.getAt(i);
-            this.game.physics.arcade.moveToXY(enemy, this.player.x, enemy.body.y, 80)
+    handleFight: function (enemy) {
+        if (Math.abs(this.player.body.x - enemy.body.x) < (2 * TILE_SIZE) && this.game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR, 5)) {
+            enemy.kill();
         }
     },
 
