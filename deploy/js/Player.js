@@ -128,12 +128,12 @@ Player.prototype = {
      * Function can be used only in Player class, don't use externally!
      */
     handleFight: function (enemy) {
-        if (this.game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR, 5)) {
+        if (this.game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR, 10)) {
             var delta;
             if (this.isTurnRight == true) {
-                delta = this.player.body.x - enemy.body.x;
-            } else {
                 delta = enemy.body.x - this.player.body.x;
+            } else {
+                delta = this.player.body.x - enemy.body.x;
             }
             if (delta < (2 * TILE_SIZE)) {
                 enemy.destroy();
