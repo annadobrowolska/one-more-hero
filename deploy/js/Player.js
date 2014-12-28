@@ -97,7 +97,7 @@ Player.prototype = {
      * Function can be used only in Player class, don't use externally!
      */
     collectStar: function (player, star) {
-        star.kill();
+        star.destroy();
         this.gameInterface.score += 100;
         this.gameInterface.scoreText.setText("score: " + this.gameInterface.score)
     },
@@ -113,6 +113,10 @@ Player.prototype = {
                 enemy.body.collideWorldBounds = false;
             } else {
                 this.game.physics.arcade.moveToXY(enemy, this.player.x, enemy.body.y, ENEMY_SPEED)
+            }
+
+            if (enemy.body.y > this.game.height) {
+                enemy.destroy();
             }
             this.handleFight(enemy);
         }
@@ -132,7 +136,7 @@ Player.prototype = {
                 delta = enemy.body.x - this.player.body.x;
             }
             if (delta < (2 * TILE_SIZE)) {
-                enemy.kill();
+                enemy.destroy();
             }
         }
     },
