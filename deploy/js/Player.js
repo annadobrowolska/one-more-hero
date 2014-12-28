@@ -124,7 +124,7 @@ Player.prototype = {
      * Handling player injuries
      * Function can be used only in Player class, don't use externally!
      */
-    hitPlayer: function (player, enemy) {
+    hitPlayer: function (player) {
         player.kill();
         this.level.gameOver();
         this.alive = false;

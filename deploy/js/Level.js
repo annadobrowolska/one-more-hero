@@ -115,6 +115,10 @@ Level.prototype = {
      * Handling win the game
      */
     winLevel: function () {
+        for (var i = 0; i < this.enemies.length; i++) {
+            var enemy = this.enemies.getAt(i);
+            enemy.body.moves = false;
+        }
         game.add.text(REAL_WIDTH - 400, 400, '- YOU WIN! -', { font: "40px Arial", fill: "#ffffff", align: "center" });
         game.add.text(REAL_WIDTH - 350, 450, 'click to restart', { font: "20px Arial", fill: "#ffffff", align: "center" });
         this.game.input.onDown.add(this.restartGame, this);
