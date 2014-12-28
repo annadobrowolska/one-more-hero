@@ -7,6 +7,7 @@ Player = function (game, level, gameInterface) {
     this.cursors = null;
     this.SPEED = 200;
     this.alive = true;
+    this.isTurnRight = true;
 };
 
 Player.prototype = {
@@ -52,9 +53,11 @@ Player.prototype = {
     addSensitivityToKeys: function () {
         if (this.cursors.left.isDown) {
             this.player.body.velocity.x = -this.SPEED;
+            this.isTurnRight = false;
         }
         else if (this.cursors.right.isDown) {
             this.player.body.velocity.x = this.SPEED;
+            this.isTurnRight = true;
         }
         if (this.cursors.up.isDown && this.player.body.touching.down) {
             this.player.body.velocity.y = -700;
@@ -118,8 +121,16 @@ Player.prototype = {
      * Function can be used only in Player class, don't use externally!
      */
     handleFight: function (enemy) {
-        if (Math.abs(this.player.body.x - enemy.body.x) < (2 * TILE_SIZE) && this.game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR, 5)) {
-            enemy.kill();
+        if (this.game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR, 5)) {
+            var delta;
+            if (this.isTurnRight == true) {
+                delta = this.player.body.x - enemy.body.x;
+            } else {
+                delta = enemy.body.x - this.player.body.x;
+            }
+            if (delta < (2 * TILE_SIZE)) {
+                enemy.kill();
+            }
         }
     },
 
