@@ -29,13 +29,10 @@ Player.prototype = {
     },
 
     update: function () {
-        this.game.physics.arcade.collide(this.player, this.level.curedElements);
-        this.addSensitivityToKeys();
-        this.handleFallIntoGulf();
+        this.enableInteractions();
         this.handleReachEndOfLevel();
         this.interactionWithEnemies();
-
-        this.game.physics.arcade.overlap(this.player, this.level.stars, this.collectStar, null, this);
+        this.addSensitivityToKeys();
     },
 
     /**
@@ -48,6 +45,19 @@ Player.prototype = {
         this.game.physics.arcade.gravity.y = 1869;
         this.game.physics.arcade.enableBody(this.player);
         this.player.body.collideWorldBounds = true;
+
+    },
+
+    /**
+     * Enables interactions between player and other objects
+     * Function can be used only in Player class, don't use externally!
+     */
+    enableInteractions: function () {
+        this.game.physics.arcade.collide(this.player, this.level.ground);
+        this.game.physics.arcade.collide(this.player, this.level.gulfs);
+        this.game.physics.arcade.collide(this.player, this.level.items);
+        this.level.map.setTileIndexCallback(4, this.handleFallIntoGulf, this, this.level.gulfs);
+        this.level.map.setTileIndexCallback([11, 12, 15], this.collectStar, this, this.level.items);
     },
 
     /**
@@ -63,8 +73,8 @@ Player.prototype = {
             this.player.body.velocity.x = SPEED;
             this.isTurnRight = true;
         }
-        if (this.cursors.up.isDown && this.player.body.touching.down) {
-            this.player.body.velocity.y = -700;
+        if (this.cursors.up.isDown && this.player.body.blocked.down) {
+            this.player.body.velocity.y -= (4 * SPEED);
         }
     },
 
@@ -73,11 +83,9 @@ Player.prototype = {
      * Function can be used only in Player class, don't use externally!
      */
     handleFallIntoGulf: function () {
-        if (this.player.body.onFloor()) {
-            this.player.body.collideWorldBounds = false;
-            this.level.gameOver();
-            this.alive = false;
-        }
+        this.player.body.collideWorldBounds = false;
+        this.level.gameOver();
+        this.alive = false;
     },
 
     /**
@@ -97,7 +105,7 @@ Player.prototype = {
      * Function can be used only in Player class, don't use externally!
      */
     collectStar: function (player, star) {
-        star.destroy();
+        this.level.map.removeTile(star.x, star.y, this.level.items);
         this.gameInterface.score += 100;
         this.gameInterface.scoreText.setText("score: " + this.gameInterface.score)
     },
@@ -110,9 +118,7 @@ Player.prototype = {
         for (var i = 0; i < this.level.enemies.length; i++) {
             var enemy = this.level.enemies.getAt(i);
             if (!enemy.body.touching.down) {
-                enemy.body.collideWorldBounds = false;
-            } else {
-                this.game.physics.arcade.moveToXY(enemy, this.player.x, enemy.body.y, ENEMY_SPEED)
+                this.game.physics.arcade.moveToXY(enemy, this.player.x, enemy.body.y, ENEMY_SPEED);
             }
 
             if (enemy.body.y > this.game.height) {

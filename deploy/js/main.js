@@ -7,14 +7,13 @@ var TILE_SIZE = 64;
 
 var firstLevelState = {
     preload: function () {
+        gameInterface = new Interface(game);
+
         level = new Level(game);
         level.preload();
 
-        gameInterface = new Interface(game, player);
-
         player = new Player(game, level, gameInterface);
         player.preload();
-
     },
     create: function () {
         level.create();
