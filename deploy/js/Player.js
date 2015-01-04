@@ -117,7 +117,7 @@ Player.prototype = {
     interactionWithEnemies: function () {
         for (var i = 0; i < this.level.enemies.length; i++) {
             var enemy = this.level.enemies.getAt(i);
-            if (!enemy.body.touching.down) {
+            if (enemy.body.blocked.down) {
                 this.game.physics.arcade.moveToXY(enemy, this.player.x, enemy.body.y, ENEMY_SPEED);
             }
 
