@@ -127,8 +127,17 @@ Player.prototype = {
     interactionWithEnemies: function () {
         for (var i = 0; i < this.level.enemies.length; i++) {
             var enemy = this.level.enemies.getAt(i);
+
             if (enemy.body.blocked.down) {
-                this.game.physics.arcade.moveToXY(enemy, this.player.x, enemy.body.y, ENEMY_SPEED);
+                if (Math.abs(this.player.body.x - enemy.body.x) < TILE_SIZE * 5 && Math.abs(this.player.body.y - enemy.body.y) < TILE_SIZE * 3) {
+                    this.game.physics.arcade.moveToXY(enemy, this.player.x, enemy.body.y, ENEMY_SPEED);
+                } else {
+                    if (this.enemyGoToLeft()) {
+                        this.game.physics.arcade.moveToXY(enemy, enemy.body.x - 2 * TILE_SIZE, enemy.body.y, ENEMY_SPEED);
+                    } else {
+                        this.game.physics.arcade.moveToXY(enemy, enemy.body.x + 2 * TILE_SIZE, enemy.body.y, ENEMY_SPEED);
+                    }
+                }
             }
 
             if (enemy.body.y > this.game.height) {
@@ -137,6 +146,11 @@ Player.prototype = {
             this.handleFight(enemy);
         }
         this.game.physics.arcade.overlap(this.player, this.level.enemies, this.hitPlayer, null, this);
+    },
+
+    enemyGoToLeft: function () {
+        var timeFactor = this.gameInterface.formattedSec % 10;
+        return timeFactor < 5;
     },
 
     /**

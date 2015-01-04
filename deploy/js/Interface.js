@@ -4,6 +4,7 @@ Interface = function (game) {
     this.scoreText = null;
     this.timerText = null;
     this.sec = 0;
+    this.formattedSec = 0;
 };
 
 Interface.prototype = {
@@ -28,8 +29,8 @@ Interface.prototype = {
 
     formattedTime: function () {
         var min = this.sec / 60;
-        var formattedSec = this.sec % 60;
-        return "  " + this.pad(min.toFixed(0), 2) + ":" + this.pad(formattedSec.toFixed(0), 2);
+        this.formattedSec = this.sec % 60;
+        return "  " + this.pad(min.toFixed(0), 2) + ":" + this.pad(this.formattedSec.toFixed(0), 2);
     },
 
     pad: function (num, size) {
