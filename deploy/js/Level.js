@@ -14,11 +14,7 @@ REAL_WIDTH = 4096;
 
 Level.prototype = {
     preload: function () {
-        this.game.load.image('sky', 'assets/sky.png');
-        this.game.load.image('ground', 'assets/ground.png');
-        this.game.load.image('item', 'assets/item.png');
         this.game.load.image('enemy', 'assets/enemy.png');
-
         this.game.load.tilemap('tilemap', 'assets/tilemap.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.image('tileset', 'assets/tileset.png');
     },
