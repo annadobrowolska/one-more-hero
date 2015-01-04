@@ -9,10 +9,16 @@ Player = function (game, level, gameInterface) {
     this.isTurnRight = true;
 };
 
-/** constant defining player speed */
+/** constant, defines player speed */
 SPEED = 200;
-/** constant defining enemy speed */
+/** constant, defines enemy speed */
 ENEMY_SPEED = 80;
+/** constant, defines the length of the area on which the player can hit during the attack */
+PLAYER_HIT_AREA = 2 * TILE_SIZE;
+/** constant, defines width of the area in which the enemy sees the player */
+VISIBILITY_WIDTH = 5 * TILE_SIZE;
+/** constant, defines height of the area in which the enemy sees the player */
+VISIBILITY_HEIGHT = 3 * TILE_SIZE;
 
 Player.prototype = {
 
@@ -137,13 +143,13 @@ Player.prototype = {
             var enemy = this.level.enemies.getAt(i);
 
             if (enemy.body.blocked.down) {
-                if (Math.abs(this.player.body.x - enemy.body.x) < TILE_SIZE * 5 && Math.abs(this.player.body.y - enemy.body.y) < TILE_SIZE * 3) {
+                if (Math.abs(this.player.body.x - enemy.body.x) < VISIBILITY_WIDTH && Math.abs(this.player.body.y - enemy.body.y) < VISIBILITY_HEIGHT) {
                     this.game.physics.arcade.moveToXY(enemy, this.player.x, enemy.body.y, ENEMY_SPEED);
                 } else {
                     if (this.enemyGoToLeft()) {
-                        this.game.physics.arcade.moveToXY(enemy, enemy.body.x - 2 * TILE_SIZE, enemy.body.y, ENEMY_SPEED);
+                        this.game.physics.arcade.moveToXY(enemy, enemy.body.x - TILE_SIZE, enemy.body.y, ENEMY_SPEED);
                     } else {
-                        this.game.physics.arcade.moveToXY(enemy, enemy.body.x + 2 * TILE_SIZE, enemy.body.y, ENEMY_SPEED);
+                        this.game.physics.arcade.moveToXY(enemy, enemy.body.x + TILE_SIZE, enemy.body.y, ENEMY_SPEED);
                     }
                 }
             }
@@ -177,7 +183,7 @@ Player.prototype = {
             } else {
                 delta = this.player.body.x - enemy.body.x;
             }
-            if (delta < (2 * TILE_SIZE)) {
+            if (delta < (PLAYER_HIT_AREA)) {
                 enemy.destroy();
                 this.gameInterface.addPoints(100);
             }
