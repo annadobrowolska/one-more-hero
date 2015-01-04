@@ -20,22 +20,28 @@ Level.prototype = {
     },
 
     create: function () {
-        this.game.world.setBounds(0, 0, REAL_WIDTH, this.game.height);
-        this.game.stage.backgroundColor = '#60baf4';
-        this.map = game.add.tilemap('tilemap');
-        this.map.addTilesetImage('tileset', 'tileset');
+        this.initMap();
         this.createCuredElements();
-
-        this.ground = this.map.createLayer('ground');
-        this.gulfs = this.map.createLayer('gulfs');
-        this.items = this.map.createLayer('items');
-
         this.createEnemies();
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
     },
 
     update: function () {
         this.game.physics.arcade.collide(this.enemies, this.ground);
+    },
+
+    /**
+     * Initialize the map. Create layers.
+     * Function can be used only in Level class, don't use externally!
+     */
+    initMap: function () {
+        this.game.world.setBounds(0, 0, REAL_WIDTH, this.game.height);
+        this.game.stage.backgroundColor = '#60baf4';
+        this.map = game.add.tilemap('tilemap');
+        this.map.addTilesetImage('tileset', 'tileset');
+        this.ground = this.map.createLayer('ground');
+        this.gulfs = this.map.createLayer('gulfs');
+        this.items = this.map.createLayer('items');
     },
 
     /**
@@ -103,7 +109,7 @@ Level.prototype = {
      * Function can be used only in Level class, don't use externally!
      */
     restartGame: function () {
-        game.state.start(FIRST_LEVEL_STATE)
+        game.state.start(FIRST_LEVEL_STATE);
     },
 
     /**

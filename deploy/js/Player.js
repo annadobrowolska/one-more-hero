@@ -23,8 +23,7 @@ Player.prototype = {
     create: function () {
         this.enablePlayerPhysics();
         this.player.body.drag.setTo(600, 0); // zwalnianie postaci jak nie są naciskane klawisze
-        this.cursors = this.game.input.keyboard.createCursorKeys();
-        this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        this.addKeyboardControl();
         this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_PLATFORMER);
     },
 
@@ -46,6 +45,15 @@ Player.prototype = {
         this.game.physics.arcade.enableBody(this.player);
         this.player.body.collideWorldBounds = true;
 
+    },
+
+    /**
+     * Enables keyboard control sensitivity
+     * Function can be used only in Player class, don't use externally!
+     */
+    addKeyboardControl: function () {
+        this.cursors = this.game.input.keyboard.createCursorKeys();
+        this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     },
 
     /**
@@ -148,6 +156,10 @@ Player.prototype = {
         this.game.physics.arcade.overlap(this.player, this.level.enemies, this.hitPlayer, null, this);
     },
 
+    /**
+     * Checks if the enemy should move to the left. Changes the return value of every 5 seconds
+     * Function can be used only in Player class, don't use externally!
+     */
     enemyGoToLeft: function () {
         var timeFactor = this.gameInterface.formattedSec % 10;
         return timeFactor < 5;
