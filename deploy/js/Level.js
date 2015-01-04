@@ -10,7 +10,7 @@ function Level(game) {
 /**
  *  constant defining the width of the world
  */
-REAL_WIDTH = 1600;
+REAL_WIDTH = 4096;
 
 Level.prototype = {
     preload: function () {
@@ -45,13 +45,29 @@ Level.prototype = {
     /**
      * Creates cured level components: ground and platforms
      * Function can be used only in Level class, don't use externally!
+     *
+     * 1 - ground (left corner)
+     * 2 - ground (center)
+     * 3 - ground (right corner)
+     * 4 - gulfs
+     * 5 - window (upper left corner)
+     * 6 - window (upper right corner)
+     * 7 - trash1
+     * 8 - trash2
+     * 9 - window (lower left corner)
+     * 10 - window (lower right cortner)
+     * 11 - item1
+     * 12 - item2
+     * 13 - windowsill (left)
+     * 14 - windowsill (right)
+     * 15 - item3
      */
     createCuredElements: function () {
         this.map.setCollision(1);
         this.map.setCollision(2);
         this.map.setCollision(3);
-        this.map.setCollision(6);
         this.map.setCollision(7);
+        this.map.setCollision(8);
         this.map.setCollision(13);
         this.map.setCollision(14);
     },

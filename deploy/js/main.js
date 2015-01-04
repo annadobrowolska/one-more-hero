@@ -27,6 +27,6 @@ var firstLevelState = {
     }
 };
 
-var game = new Phaser.Game(1088, 640, Phaser.AUTO, 'game');
+var game = new Phaser.Game(1024, 640, Phaser.AUTO, 'game');
 game.state.add(FIRST_LEVEL_STATE, firstLevelState);
 game.state.start(FIRST_LEVEL_STATE);
