@@ -7,10 +7,14 @@ function Level(game) {
     this.items = null
 }
 
-/**
- *  constant defining the width of the world
- */
+/** constant, defines the width of the world */
 REAL_WIDTH = 4096;
+/** constant, defines number of enemies */
+ENEMIES_NUMBER = 10;
+/** constant, defines closest, allowed enemy position, so as not to kill the player */
+ENEMY_MIN_X_POSITION = 8 * TILE_SIZE;
+/** constant, defines farthest, allowed enemy position, so that it was not beyond the boundary maps */
+ENEMY_MAX_X_POSITION = REAL_WIDTH - TILE_SIZE;
 
 Level.prototype = {
     preload: function () {
@@ -81,11 +85,13 @@ Level.prototype = {
     createEnemies: function () {
         this.enemies = game.add.group();
         this.enemies.enableBody = true;
-        for (var i = 0; i < 1; i++) {
-            var enemy = this.game.add.sprite(750, this.game.height - 2 * TILE_SIZE, 'enemy');
+        for (var i = 0; i < ENEMIES_NUMBER; i++) {
+            var randomXCoordinate = Math.floor((Math.random() * ENEMY_MAX_X_POSITION) + ENEMY_MIN_X_POSITION);
+            var enemy = this.game.add.sprite(randomXCoordinate, this.game.height - 2 * TILE_SIZE, 'enemy');
             this.game.physics.enable(enemy, Phaser.Physics.ARCADE);
             enemy.body.allowGravity = true;
             enemy.body.collideWorldBounds = false;
+            enemy.disorderedDirection = i % 2;
             this.enemies.add(enemy);
         }
         this.game.physics.arcade.enableBody(this.enemies);

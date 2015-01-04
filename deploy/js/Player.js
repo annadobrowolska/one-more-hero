@@ -144,9 +144,9 @@ Player.prototype = {
 
             if (enemy.body.blocked.down) {
                 if (Math.abs(this.player.body.x - enemy.body.x) < VISIBILITY_WIDTH && Math.abs(this.player.body.y - enemy.body.y) < VISIBILITY_HEIGHT) {
-                    this.game.physics.arcade.moveToXY(enemy, this.player.x, enemy.body.y, ENEMY_SPEED);
+                    this.game.physics.arcade.moveToXY(enemy, this.player.x, enemy.body.y, ENEMY_SPEED + TILE_SIZE);
                 } else {
-                    if (this.enemyGoToLeft()) {
+                    if (this.enemyGoToLeft(enemy)) {
                         this.game.physics.arcade.moveToXY(enemy, enemy.body.x - TILE_SIZE, enemy.body.y, ENEMY_SPEED);
                     } else {
                         this.game.physics.arcade.moveToXY(enemy, enemy.body.x + TILE_SIZE, enemy.body.y, ENEMY_SPEED);
@@ -166,9 +166,9 @@ Player.prototype = {
      * Checks if the enemy should move to the left. Changes the return value of every 5 seconds
      * Function can be used only in Player class, don't use externally!
      */
-    enemyGoToLeft: function () {
+    enemyGoToLeft: function (enemy) {
         var timeFactor = this.gameInterface.formattedSec % 10;
-        return timeFactor < 5;
+        return timeFactor < 5 && enemy.disorderedDirection == false;
     },
 
     /**
