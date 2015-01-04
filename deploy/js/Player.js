@@ -153,6 +153,7 @@ Player.prototype = {
             }
             if (delta < (2 * TILE_SIZE)) {
                 enemy.destroy();
+                this.gameInterface.addPoints(100);
             }
         }
     },
