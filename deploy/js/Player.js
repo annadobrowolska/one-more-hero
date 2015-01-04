@@ -106,8 +106,18 @@ Player.prototype = {
      */
     collectStar: function (player, star) {
         this.level.map.removeTile(star.x, star.y, this.level.items);
-        this.gameInterface.score += 100;
-        this.gameInterface.scoreText.setText("score: " + this.gameInterface.score)
+        var points;
+        switch (star.index) {
+            case 12:
+                points = 200;
+                break;
+            case 15:
+                points = 300;
+                break;
+            default:
+                points = 100;
+        }
+        this.gameInterface.addPoints(points);
     },
 
     /**

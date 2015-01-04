@@ -36,6 +36,14 @@ Interface.prototype = {
         var s = num + "";
         while (s.length < size) s = "0" + s;
         return s;
+    },
+
+    /**
+     * Update score
+     */
+    addPoints: function (points) {
+        this.score += points;
+        this.scoreText.setText("score: " + this.score)
     }
 }
 ;
