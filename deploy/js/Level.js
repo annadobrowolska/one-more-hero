@@ -4,7 +4,8 @@ function Level(game) {
     this.ground = null;
     this.map = null;
     this.gulfs = null;
-    this.items = null
+    this.items = null;
+    this.enemiesCollisions = null;
 }
 
 /** constant, defines the width of the world */
@@ -12,9 +13,9 @@ REAL_WIDTH = 4096;
 /** constant, defines number of enemies */
 ENEMIES_NUMBER = 10;
 /** constant, defines closest, allowed enemy position, so as not to kill the player */
-ENEMY_MIN_X_POSITION = 8 * TILE_SIZE;
+ENEMY_MIN_X_POSITION = 7 * TILE_SIZE;
 /** constant, defines farthest, allowed enemy position, so that it was not beyond the boundary maps */
-ENEMY_MAX_X_POSITION = REAL_WIDTH - TILE_SIZE;
+ENEMY_MAX_X_POSITION = REAL_WIDTH - 2 * TILE_SIZE;
 
 Level.prototype = {
     preload: function () {
@@ -32,6 +33,7 @@ Level.prototype = {
 
     update: function () {
         this.game.physics.arcade.collide(this.enemies, this.ground);
+        this.game.physics.arcade.collide(this.enemies, this.enemiesCollisions);
     },
 
     /**
@@ -46,6 +48,8 @@ Level.prototype = {
         this.ground = this.map.createLayer('ground');
         this.gulfs = this.map.createLayer('gulfs');
         this.items = this.map.createLayer('items');
+        this.enemiesCollisions = this.map.createLayer('enemiesCollisions');
+        this.enemiesCollisions.visible = false;
     },
 
     /**
@@ -67,6 +71,7 @@ Level.prototype = {
      * 13 - windowsill (left)
      * 14 - windowsill (right)
      * 15 - item3
+     * 16 - wall for enemies
      */
     createCuredElements: function () {
         this.map.setCollision(1);
@@ -76,6 +81,7 @@ Level.prototype = {
         this.map.setCollision(8);
         this.map.setCollision(13);
         this.map.setCollision(14);
+        this.map.setCollision(16, true, this.enemiesCollisions)
     },
 
     /**
@@ -86,7 +92,7 @@ Level.prototype = {
         this.enemies = game.add.group();
         this.enemies.enableBody = true;
         for (var i = 0; i < ENEMIES_NUMBER; i++) {
-            var randomXCoordinate = Math.floor((Math.random() * ENEMY_MAX_X_POSITION) + ENEMY_MIN_X_POSITION);
+            var randomXCoordinate = this.xRandomization();
             var enemy = this.game.add.sprite(randomXCoordinate, this.game.height - 2 * TILE_SIZE, 'enemy');
             this.game.physics.enable(enemy, Phaser.Physics.ARCADE);
             enemy.body.allowGravity = true;
@@ -95,6 +101,14 @@ Level.prototype = {
             this.enemies.add(enemy);
         }
         this.game.physics.arcade.enableBody(this.enemies);
+    },
+
+    xRandomization: function () {
+        var randNumber = 24 * TILE_SIZE;
+        while (randNumber == 24 * TILE_SIZE || randNumber == 25 * TILE_SIZE) {
+            randNumber = Math.floor((Math.random() * ENEMY_MAX_X_POSITION) + ENEMY_MIN_X_POSITION);
+        }
+        return randNumber;
     },
 
     /**
