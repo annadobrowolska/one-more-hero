@@ -10,7 +10,7 @@ Player = function (game, level, gameInterface) {
 };
 
 /** constant, defines player speed */
-SPEED = 200;
+SPEED = 300;
 /** constant, defines enemy speed */
 ENEMY_SPEED = 80;
 /** constant, defines the length of the area on which the player can hit during the attack */
@@ -88,7 +88,7 @@ Player.prototype = {
             this.isTurnRight = true;
         }
         if (this.cursors.up.isDown && this.player.body.blocked.down) {
-            this.player.body.velocity.y -= (4 * SPEED);
+            this.player.body.velocity.y -= (3 * SPEED);
         }
     },
 
