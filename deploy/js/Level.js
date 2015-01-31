@@ -19,9 +19,9 @@ ENEMY_MAX_X_POSITION = REAL_WIDTH - 2 * TILE_SIZE;
 
 Level.prototype = {
     preload: function () {
-        this.game.load.image('enemy', 'assets/enemy.png');
+        this.game.load.spritesheet('enemy', 'assets/enemy.png', TILE_SIZE, TILE_SIZE);
         this.game.load.tilemap('tilemap', 'assets/tilemap.json', null, Phaser.Tilemap.TILED_JSON);
-        game.load.image('tileset', 'assets/tileset.png');
+        this.game.load.image('tileset', 'assets/tileset.png');
     },
 
     create: function () {
@@ -123,6 +123,7 @@ Level.prototype = {
         for (var i = 0, max = this.enemies.length; i < max; i++) {
             var enemy = this.enemies.getAt(i);
             enemy.body.moves = false;
+            enemy.animations.stop();
         }
     },
 
@@ -143,6 +144,7 @@ Level.prototype = {
         while (i--) {
             var enemy = this.enemies.getAt(i);
             enemy.body.moves = false;
+            enemy.animations.stop();
         }
         game.add.text(REAL_WIDTH - 400, 400, '- YOU WIN! -', { font: "40px Arial", fill: "#ffffff", align: "center" });
         game.add.text(REAL_WIDTH - 350, 450, 'click to restart', { font: "20px Arial", fill: "#ffffff", align: "center" });

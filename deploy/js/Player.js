@@ -28,6 +28,7 @@ Player.prototype = {
 
     create: function () {
         this.enablePlayerPhysics();
+        this.enableEnemyAnimations();
         this.player.body.drag.setTo(1000, 0); // zwalnianie postaci jak nie są naciskane klawisze
         this.addKeyboardControl();
         this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_PLATFORMER);
@@ -40,6 +41,16 @@ Player.prototype = {
         this.addSensitivityToKeys();
     },
 
+    enableEnemyAnimations: function () {
+        var i = this.level.enemies.length;
+        while (i--) {
+            var enemy = this.level.enemies.getAt(i);
+            enemy.animations.add('leftEnemy', [3, 4, 5, 6], 10, true);
+            enemy.animations.add('rightEnemy', [0, 1, 2], 10, true);
+        }
+    },
+
+
     /**
      * Enables player physics with proper gravity
      * Function can be used only in Player class, don't use externally!
@@ -51,8 +62,8 @@ Player.prototype = {
         this.game.physics.arcade.enableBody(this.player);
         this.player.body.collideWorldBounds = true;
 
-        this.player.animations.add('left', [3, 4, 5, 6], 10, true);
-        this.player.animations.add('right', [0, 1, 2], 10, true);
+        this.player.animations.add('leftPlayer', [3, 4, 5, 6], 10, true);
+        this.player.animations.add('rightPlayer', [0, 1, 2], 10, true);
     },
 
     /**
@@ -84,12 +95,12 @@ Player.prototype = {
         if (this.cursors.left.isDown) {
             this.player.body.velocity.x = -SPEED;
             this.isTurnRight = false;
-            this.player.animations.play('left');
+            this.player.animations.play('leftPlayer');
         }
         else if (this.cursors.right.isDown) {
             this.player.body.velocity.x = SPEED;
             this.isTurnRight = true;
-            this.player.animations.play('right');
+            this.player.animations.play('rightPlayer');
         } else {
             this.player.body.velocity.x = 0;
             this.player.animations.stop();
@@ -159,11 +170,18 @@ Player.prototype = {
 
             if (enemy.body.blocked.down) {
                 if (Math.abs(this.player.body.x - enemy.body.x) < VISIBILITY_WIDTH && Math.abs(this.player.body.y - enemy.body.y) < VISIBILITY_HEIGHT) {
+                    if (this.player.body.x < enemy.body.x) {
+                        enemy.animations.play('leftEnemy');
+                    } else {
+                        enemy.animations.play('rightEnemy');
+                    }
                     this.game.physics.arcade.moveToXY(enemy, this.player.x, enemy.body.y, ENEMY_SPEED + TILE_SIZE);
                 } else {
                     if (this.enemyGoToLeft(enemy)) {
+                        enemy.animations.play('leftEnemy');
                         this.game.physics.arcade.moveToXY(enemy, enemy.body.x - TILE_SIZE, enemy.body.y, ENEMY_SPEED);
                     } else {
+                        enemy.animations.play('rightEnemy');
                         this.game.physics.arcade.moveToXY(enemy, enemy.body.x + TILE_SIZE, enemy.body.y, ENEMY_SPEED);
                     }
                 }
