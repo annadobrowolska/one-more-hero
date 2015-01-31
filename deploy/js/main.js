@@ -1,5 +1,7 @@
 var FIRST_LEVEL_STATE = "firstLevel";
-var MAIN_MENU = "mainMenu"
+var MAIN_MENU = "mainMenu";
+var GAME_HEIGHT = 640;
+var GAME_WIDTH = 1024;
 
 var level = null;
 var player = null;
@@ -9,14 +11,21 @@ var TILE_SIZE = 64;
 var mainMenuState = {
     preload: function () {
         this.game.load.spritesheet('menu', 'assets/menu.png', 1024, 640);
+        this.game.load.spritesheet('start', 'assets/start.png', 256, 128);
     },
 
     create: function () {
         this.add.sprite(0, 0, 'menu');
+        this.add.button(GAME_WIDTH / 2 - 128, GAME_HEIGHT / 2 - 128,
+            'start', this.startGame, this);
     },
 
     update: function () {
 
+    },
+
+    startGame: function () {
+        this.state.start(FIRST_LEVEL_STATE);
     }
 };
 
