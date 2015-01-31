@@ -91,6 +91,7 @@ Player.prototype = {
             this.isTurnRight = true;
             this.player.animations.play('right');
         } else {
+            this.player.body.velocity.x = 0;
             this.player.animations.stop();
             if (this.isTurnRight) {
                 this.player.frame = 2;
@@ -187,7 +188,7 @@ Player.prototype = {
      * Function can be used only in Player class, don't use externally!
      */
     handleFight: function (enemy) {
-        if (this.game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR, 10)) {
+        if (this.game.input.keyboard.upDuration(Phaser.Keyboard.SPACEBAR, 50)) {
             var delta;
             if (this.isTurnRight == true) {
                 delta = enemy.body.x - this.player.body.x;
