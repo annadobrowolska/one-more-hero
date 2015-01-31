@@ -111,6 +111,7 @@ Player.prototype = {
     handleFallIntoGulf: function () {
         this.player.body.collideWorldBounds = false;
         this.level.gameOver();
+        this.player.animations.stop();
         this.alive = false;
     },
 
@@ -122,6 +123,7 @@ Player.prototype = {
         if (this.player.position.x > REAL_WIDTH - 100) {
             this.game.input.keyboard.destroy();
             this.level.winLevel();
+            this.player.animations.stop();
             this.alive = false;
         }
     },
