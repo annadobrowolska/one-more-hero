@@ -131,6 +131,7 @@ Level.prototype = {
      * Function can be used only in Level class, don't use externally!
      */
     restartGame: function () {
+        this.game.input.keyboard.enabled = true;
         game.state.start(FIRST_LEVEL_STATE);
     },
 
@@ -138,7 +139,7 @@ Level.prototype = {
      * Handling win the game
      */
     winLevel: function () {
-        var i = this.level.enemies.length;
+        var i = this.enemies.length;
         while (i--) {
             var enemy = this.enemies.getAt(i);
             enemy.body.moves = false;

@@ -121,7 +121,7 @@ Player.prototype = {
      */
     handleReachEndOfLevel: function () {
         if (this.player.position.x > REAL_WIDTH - 100) {
-            this.game.input.keyboard.destroy();
+            this.game.input.keyboard.enabled = false;
             this.level.winLevel();
             this.player.animations.stop();
             this.alive = false;
