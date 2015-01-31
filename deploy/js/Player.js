@@ -28,7 +28,7 @@ Player.prototype = {
 
     create: function () {
         this.enablePlayerPhysics();
-        this.player.body.drag.setTo(600, 0); // zwalnianie postaci jak nie są naciskane klawisze
+        this.player.body.drag.setTo(1000, 0); // zwalnianie postaci jak nie są naciskane klawisze
         this.addKeyboardControl();
         this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_PLATFORMER);
     },
@@ -51,6 +51,8 @@ Player.prototype = {
         this.game.physics.arcade.enableBody(this.player);
         this.player.body.collideWorldBounds = true;
 
+        this.player.animations.add('left', [3, 4, 5, 6], 10, true);
+        this.player.animations.add('right', [0, 1, 2], 10, true);
     },
 
     /**
@@ -82,10 +84,19 @@ Player.prototype = {
         if (this.cursors.left.isDown) {
             this.player.body.velocity.x = -SPEED;
             this.isTurnRight = false;
+            this.player.animations.play('left');
         }
         else if (this.cursors.right.isDown) {
             this.player.body.velocity.x = SPEED;
             this.isTurnRight = true;
+            this.player.animations.play('right');
+        } else {
+            this.player.animations.stop();
+            if (this.isTurnRight) {
+                this.player.frame = 2;
+            } else {
+                this.player.frame = 3;
+            }
         }
         if (this.cursors.up.isDown && this.player.body.blocked.down) {
             this.player.body.velocity.y -= (3 * SPEED);
