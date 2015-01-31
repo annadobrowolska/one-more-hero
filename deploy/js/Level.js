@@ -104,8 +104,10 @@ Level.prototype = {
     },
 
     xRandomization: function () {
-        var randNumber = 24 * TILE_SIZE;
-        while (randNumber == 24 * TILE_SIZE || randNumber == 25 * TILE_SIZE) {
+        var firstRand = 24 * TILE_SIZE;
+        var gulfRand = 25 * TILE_SIZE;
+        var randNumber = firstRand;
+        while (randNumber == firstRand || randNumber == gulfRand) {
             randNumber = Math.floor((Math.random() * ENEMY_MAX_X_POSITION) + ENEMY_MIN_X_POSITION);
         }
         return randNumber;
@@ -118,7 +120,7 @@ Level.prototype = {
         game.add.text(game.camera.x + 400, 400, '- GAME OVER -', { font: "40px Arial", fill: "#ffffff", align: "center" });
         game.add.text(game.camera.x + 450, 450, 'click to restart', { font: "20px Arial", fill: "#ffffff", align: "center" });
         this.game.input.onDown.add(this.restartGame, this);
-        for (var i = 0; i < this.enemies.length; i++) {
+        for (var i = 0, max = this.enemies.length; i < max; i++) {
             var enemy = this.enemies.getAt(i);
             enemy.body.moves = false;
         }
@@ -136,7 +138,8 @@ Level.prototype = {
      * Handling win the game
      */
     winLevel: function () {
-        for (var i = 0; i < this.enemies.length; i++) {
+        var i = this.level.enemies.length;
+        while (i--) {
             var enemy = this.enemies.getAt(i);
             enemy.body.moves = false;
         }

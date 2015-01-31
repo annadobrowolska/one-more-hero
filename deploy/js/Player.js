@@ -151,7 +151,8 @@ Player.prototype = {
      * Function can be used only in Player class, don't use externally!
      */
     interactionWithEnemies: function () {
-        for (var i = 0; i < this.level.enemies.length; i++) {
+        var i = this.level.enemies.length;
+        while (i--) {
             var enemy = this.level.enemies.getAt(i);
 
             if (enemy.body.blocked.down) {
