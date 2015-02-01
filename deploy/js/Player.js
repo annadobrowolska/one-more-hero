@@ -5,6 +5,7 @@ Player = function (game, level, gameInterface) {
     this.gameInterface = gameInterface;
     this.player = null;
     this.cursors = null;
+    this.cane = null;
     this.alive = true;
     this.isTurnRight = true;
 };
@@ -24,6 +25,7 @@ Player.prototype = {
 
     preload: function () {
         this.game.load.spritesheet('player', 'assets/player.png', TILE_SIZE, TILE_SIZE);
+        this.game.load.spritesheet('cane', 'assets/cane.png', TILE_SIZE, TILE_SIZE);
     },
 
     create: function () {
@@ -57,9 +59,11 @@ Player.prototype = {
      */
     enablePlayerPhysics: function () {
         this.player = game.add.sprite(TILE_SIZE, game.world.height / 2, 'player');
+        this.cane = game.add.sprite(TILE_SIZE, game.world.height / 2, 'cane');
         this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
         this.game.physics.arcade.gravity.y = 1869;
         this.game.physics.arcade.enableBody(this.player);
+        this.game.physics.arcade.enableBody(this.cane);
         this.player.body.collideWorldBounds = true;
 
         this.player.animations.add('leftPlayer', [3, 4, 5], 10, true);
@@ -68,6 +72,7 @@ Player.prototype = {
         this.player.animations.add('leftFightPlayer', [7, 3], 10, true);
         this.player.animations.add('rightFightPlayer', [6, 2], 10, true);
 
+        this.cane.animations.add('rightFightPlayer', [0, 1], 10, true);
     },
 
     /**
@@ -115,12 +120,21 @@ Player.prototype = {
             }
         }
 
+        if (this.isTurnRight) {
+            this.cane.body.x = this.player.body.x + 64;
+        } else {
+            this.cane.body.x = this.player.body.x - 64;
+        }
+        this.cane.body.y = this.player.body.y;
+        this.cane.frame = 0;
+
         if (this.game.input.keyboard.downDuration(Phaser.Keyboard.SPACEBAR, 1500)) {
             if (this.isTurnRight) {
                 this.player.frame = 6;
             } else {
                 this.player.frame = 7;
             }
+            this.cane.frame = 1;
         }
 
         if (this.cursors.up.isDown && this.player.body.blocked.down) {
