@@ -62,8 +62,12 @@ Player.prototype = {
         this.game.physics.arcade.enableBody(this.player);
         this.player.body.collideWorldBounds = true;
 
-        this.player.animations.add('leftPlayer', [3, 4, 5, 6], 10, true);
+        this.player.animations.add('leftPlayer', [3, 4, 5], 10, true);
         this.player.animations.add('rightPlayer', [0, 1, 2], 10, true);
+
+        this.player.animations.add('leftFightPlayer', [7, 3], 10, true);
+        this.player.animations.add('rightFightPlayer', [6, 2], 10, true);
+
     },
 
     /**
@@ -110,6 +114,15 @@ Player.prototype = {
                 this.player.frame = 3;
             }
         }
+
+        if (this.game.input.keyboard.downDuration(Phaser.Keyboard.SPACEBAR, 1500)) {
+            if (this.isTurnRight) {
+                this.player.frame = 6;
+            } else {
+                this.player.frame = 7;
+            }
+        }
+
         if (this.cursors.up.isDown && this.player.body.blocked.down) {
             this.player.body.velocity.y -= (3 * SPEED);
         }
