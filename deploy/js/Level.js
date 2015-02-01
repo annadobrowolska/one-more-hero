@@ -22,6 +22,7 @@ Level.prototype = {
         this.game.load.spritesheet('enemy', 'assets/enemy.png', TILE_SIZE, TILE_SIZE);
         this.game.load.tilemap('tilemap', 'assets/tilemap.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.image('tileset', 'assets/tileset.png');
+        this.game.load.image('sky', 'assets/background.png');
     },
 
     create: function () {
@@ -41,8 +42,9 @@ Level.prototype = {
      * Function can be used only in Level class, don't use externally!
      */
     initMap: function () {
+        this.game.add.sprite(0, 0, 'sky');
         this.game.world.setBounds(0, 0, REAL_WIDTH, this.game.height);
-        this.game.stage.backgroundColor = '#60baf4';
+        //this.game.stage.backgroundColor = '#60baf4';
         this.map = game.add.tilemap('tilemap');
         this.map.addTilesetImage('tileset', 'tileset');
         this.ground = this.map.createLayer('ground');
