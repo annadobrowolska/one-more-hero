@@ -44,7 +44,6 @@ Level.prototype = {
     initMap: function () {
         this.game.add.sprite(0, 0, 'sky');
         this.game.world.setBounds(0, 0, REAL_WIDTH, this.game.height);
-        //this.game.stage.backgroundColor = '#60baf4';
         this.map = game.add.tilemap('tilemap');
         this.map.addTilesetImage('tileset', 'tileset');
         this.ground = this.map.createLayer('ground');
