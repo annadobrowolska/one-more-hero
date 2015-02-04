@@ -76,4 +76,4 @@ var game = new Phaser.Game(1024, 640, Phaser.AUTO, 'game');
 game.state.add(MAIN_MENU, mainMenuState);
 game.state.add(CONTROLS, controlsState);
 game.state.add(FIRST_LEVEL_STATE, firstLevelState);
-game.state.start(FIRST_LEVEL_STATE);
+game.state.start(MAIN_MENU);
